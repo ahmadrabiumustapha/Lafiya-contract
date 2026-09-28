@@ -1,9 +1,97 @@
+# ─── Rust build artifacts ────────────────────────────────────────────────────
 /target
+**/target
 **/*.rs.bk
-.DS_Store
+
+# ─── WASM build outputs ──────────────────────────────────────────────────────
 *.wasm
+# Keep WASM artifacts that are used by integration tests (referenced from contracts/)
 !contracts/**/target
-.env
-.soroban
+
+# ─── Test snapshots (soroban-sdk testutils, insta, etc.) ─────────────────────
 test_snapshots/
+**/test_snapshots/
+*.snap
+*.snap.new
+**/__snapshots__/
+
+# ─── Environment and secrets ─────────────────────────────────────────────────
+.env
+.env.*
+!.env.example
+.soroban
+*.secret
+*.pem
+*.key
+
+# ─── macOS / Linux / Windows OS artifacts ────────────────────────────────────
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# ─── Editor / IDE artifacts ──────────────────────────────────────────────────
+.vscode/
+.idea/
+*.iml
+*.ipr
+*.iws
+*.swp
+*.swo
+*~
+.vim/
+.clangd/
+
+# ─── Python artifacts ────────────────────────────────────────────────────────
 __pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pycache
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+dist/
+*.egg
+.python-version
+
+# ─── Node / npm / pnpm artifacts ─────────────────────────────────────────────
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+.npm/
+
+# ─── Deployment state (auto-generated, not tracked) ─────────────────────────
+deployments/
+*.deployment.json
+
+# ─── Audit reports (runtime output, not tracked) ────────────────────────────
+revoke-*.json
+revoke-*.csv
+audit-*.json
+audit-*.csv
+
+# ─── Temporary and log files ────────────────────────────────────────────────
+*.log
+*.tmp
+*.temp
+*.bak
+*.backup
+*.orig
+/tmp/
+
+# ─── Cargo / Rust lock alternatives ──────────────────────────────────────────
+# Cargo.lock is committed for binaries (lafiya-cli) per Rust convention.
+# Do NOT add Cargo.lock here.
+
+# ─── Coverage reports ────────────────────────────────────────────────────────
+tarpaulin-report.html
+lcov.info
+coverage/

@@ -1,5 +1,19 @@
 # Lafiya Scripts
 
+> **Note (issue #402):** `lafiya-cli` is now the single operational entry point.
+> The shell scripts in this directory are **deprecated thin wrappers** that exec
+> `lafiya-cli` and print a deprecation warning. They will be removed in the next
+> release. Use `lafiya-cli` directly:
+>
+> ```bash
+> lafiya-cli --network testnet deploy --source <identity> --admin <address>
+> lafiya-cli --network testnet upgrade --contract attester-registry --source <identity>
+> lafiya-cli --network testnet smoke-test --source <identity>
+> lafiya-cli --network testnet attester add G... --source <identity>
+> lafiya-cli --network testnet attestation revoke-by-attester G... --source <identity>
+> lafiya-cli --help
+> ```
+
 This directory contains deployment and admin tooling that **all read from `config/networks.toml`** — no hardcoded RPC URLs or passphrases.
 
 ## Centralized Config

@@ -105,3 +105,38 @@ fn attestation_get_help_prints_usage() {
 fn deploy_help_prints_usage() {
     assert_help_ok(&["deploy"]);
 }
+
+#[test]
+fn upgrade_help_prints_usage() {
+    assert_help_ok(&["upgrade"]);
+}
+
+#[test]
+fn smoke_test_help_prints_usage() {
+    assert_help_ok(&["smoke-test"]);
+}
+
+#[test]
+fn attester_suspend_help_prints_usage() {
+    assert_help_ok(&["attester", "suspend"]);
+}
+
+#[test]
+fn attester_reinstate_help_prints_usage() {
+    assert_help_ok(&["attester", "reinstate"]);
+}
+
+#[test]
+fn attestation_revoke_help_prints_usage() {
+    assert_help_ok(&["attestation", "revoke"]);
+}
+
+#[test]
+fn attestation_revoke_by_attester_help_prints_usage() {
+    assert_help_ok(&["attestation", "revoke-by-attester"]);
+}
+
+#[test]
+fn attestation_history_help_prints_usage() {
+    assert_help_ok(&["attestation", "history"]);
+}

@@ -1,4 +1,4 @@
-.PHONY: build test fmt fmt-check clippy wasm wasm-contracts check clean config-check config-list deploy bench conformance conformance-update
+.PHONY: build test fmt fmt-check clippy wasm wasm-contracts check clean config-check config-list deploy upgrade smoke-test bench conformance conformance-update
 
 build:
 	cargo build --workspace
@@ -53,11 +53,22 @@ bench:
 NETWORK ?= testnet
 
 config-check:
-	./scripts/admin.sh --network $(NETWORK) config show
+	cargo run -p lafiya-cli -- --network $(NETWORK) config show
 	cargo test -p lafiya-config
 
 config-list:
-	./scripts/admin.sh --network $(NETWORK) config list
+	cargo run -p lafiya-cli -- --network $(NETWORK) config list
 
+# Deploy via lafiya-cli (replaces scripts/deploy.sh).
+# Set STELLAR_ACCOUNT and ADMIN_ADDRESS env vars or use --source / --admin flags.
 deploy:
-	./scripts/deploy.sh --network $(NETWORK)
+	cargo run -p lafiya-cli -- --network $(NETWORK) deploy
+
+# Upgrade a contract via lafiya-cli (replaces scripts/upgrade.sh).
+# CONTRACT=attester-registry or attestation-registry
+upgrade:
+	cargo run -p lafiya-cli -- --network $(NETWORK) upgrade --contract $(CONTRACT) $(UPGRADE_ARGS)
+
+# Smoke test via lafiya-cli (replaces scripts/smoke-test.sh).
+smoke-test:
+	cargo run -p lafiya-cli -- --network $(NETWORK) smoke-test $(SMOKE_ARGS)

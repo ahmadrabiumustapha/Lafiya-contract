@@ -1,7 +1,10 @@
 # Runbook: Recovering from an RPC Outage or Ambiguous Submission
 
-**Audience:** anyone running `scripts/admin.sh`, `scripts/deploy.sh`, `scripts/upgrade.sh`,
-or `cargo run -p lafiya-cli` and hitting a timeout, connection error, or rate limit.
+**Audience:** anyone running `lafiya-cli` (or the deprecated wrapper scripts) and
+hitting a timeout, connection error, or rate limit.
+
+> **Note:** `scripts/admin.sh`, `scripts/deploy.sh`, `scripts/upgrade.sh`, and
+> `scripts/smoke-test.sh` are deprecated thin wrappers. Use `lafiya-cli` directly.
 
 **Scope:** what to do *after* a command against `config/networks.toml`'s configured RPC
 endpoint fails or hangs, before deciding whether to re-run it. Not a description of how to
@@ -37,7 +40,7 @@ one (or you don't have the terminal output anymore):
   submitted in one step; if no hash was printed, the request most likely never reached the
   network (Definite failure — see §3, retry directly). This is the one case where "no hash"
   is itself informative.
-- For `deploy`/`upgrade`: check `scripts/deploy.sh`'s or `scripts/upgrade.sh`'s printed
+- For `deploy`/`upgrade`: check `lafiya-cli deploy`'s or `lafiya-cli upgrade`'s printed
   progress log — both echo each `stellar contract ...` invocation's arguments before running
   it, including any hash it produced.
 
@@ -74,7 +77,7 @@ curl -s "$LAFIYA_RPC_URL" \
 Read `result.status`:
 
 - `"SUCCESS"` — the transaction landed. **Stop here — do not re-run the original command.**
-  Verify the effect instead (e.g. `./scripts/admin.sh --network testnet attester is <addr>`).
+  Verify the effect instead (e.g. `lafiya-cli --network testnet attester is <addr>`).
 - `"FAILED"` — the transaction was included but failed on-chain. Read `result.resultXdr` (or
   re-run with `--network` pointed at a block explorer if you have one configured) for why.
   Treat as **do not retry this transaction** (§3, last row).
@@ -102,7 +105,7 @@ extending this to a list; until that lands, do this manually):
    `NOT_FOUND` everywhere, treat it as safe to retry and re-run the original command,
    pointed at the working provider:
    ```sh
-   ./scripts/admin.sh --network testnet --config /path/to/alt-networks.toml attester add G...
+   lafiya-cli --network testnet --config /path/to/alt-networks.toml attester add G...
    ```
    (Use a scratch copy of `networks.toml` with `rpc_url` swapped — do not commit a
    temporary provider override into the tracked config file.)

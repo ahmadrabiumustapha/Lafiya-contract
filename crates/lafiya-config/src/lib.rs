@@ -3,6 +3,7 @@
 //! No secrets are ever stored in the config file — only public RPC URLs,
 //! passphrases, and contract IDs.
 
+pub mod preflight;
 pub mod validation;
 
 use serde::Deserialize;
@@ -12,6 +13,11 @@ use thiserror::Error;
 pub use validation::{
     validate_account_address, validate_address, validate_contract_id, validate_network_name,
     validate_record_hash, validate_rpc_url, validate_source_account, AddressKind, ValidationError,
+};
+
+pub use preflight::{
+    run_preflight, ContractCheck, MockPreflightRpc, PreflightError, PreflightResult,
+    PreflightRpc, StellarCliRpc, MAX_LEDGER_AGE_SECS,
 };
 
 #[derive(Debug, Error)]

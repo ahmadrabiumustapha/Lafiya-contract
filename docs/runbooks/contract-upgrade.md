@@ -6,10 +6,35 @@
 **Scope:** upgrading existing deployed instances (testnet or mainnet). Initial
 deployment is out of scope for this runbook.
 
-**Companion tooling:** [`scripts/upgrade.sh`](../../scripts/upgrade.sh) automates the
-mechanical steps described here (build → size check → hash → upload → `upgrade()` →
-optional `migrate()` → verify). Every step the script performs is also spelled out
-manually below, so the procedure can be followed — and audited — without it.
+**Companion tooling:** `lafiya-cli upgrade` automates the mechanical steps described
+here (build → size check → hash → upload → `upgrade()` → optional `migrate()` →
+verify). Every step the CLI performs is also spelled out manually below, so the
+procedure can be followed — and audited — without it.
+
+> ⚠️ `scripts/upgrade.sh` is now a deprecated thin wrapper that calls `lafiya-cli upgrade`.
+> Use `lafiya-cli upgrade` directly.
+
+```bash
+# Preferred: use the CLI directly
+lafiya-cli --network testnet upgrade \
+  --contract attester-registry \
+  --source admin-identity \
+  --expected-schema-version 1 \
+  --expected-wasm-hash <hash-from-release-manifest>
+
+# With migration (schema-changing releases)
+lafiya-cli --network testnet upgrade \
+  --contract attester-registry \
+  --source admin-identity \
+  --run-migrate \
+  --expected-schema-version 2
+
+# Dry run (preview without executing)
+lafiya-cli --network testnet upgrade \
+  --contract attester-registry \
+  --source admin-identity \
+  --dry-run
+```
 
 > ⚠️ An upgrade is a security-critical operation: whoever holds the admin key can
 > repoint the contract at **any** wasm. Never sign an `upgrade` call for a wasm hash

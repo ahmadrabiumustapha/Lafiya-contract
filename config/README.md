@@ -51,11 +51,20 @@ export STELLAR_DEPLOYER_SECRET_KEY="S..."
 All tooling uses `--network <name>` which reads from this config:
 
 ```bash
-./scripts/deploy.sh --network testnet
-./scripts/admin.sh --network testnet list-attesters
+# Preferred: use lafiya-cli directly
+lafiya-cli --network testnet config show
+lafiya-cli --network testnet attester is G...
+lafiya-cli --network testnet deploy --source <identity> --admin <address>
+lafiya-cli --network testnet upgrade --contract attester-registry --source <identity>
+lafiya-cli --network testnet smoke-test --source <identity>
 
+# During development (cargo run):
 cargo run -p lafiya-cli -- --network testnet config show
-cargo run -p lafiya-cli -- --network testnet attester is C...GABC
+cargo run -p lafiya-cli -- --network testnet attester is G...
+
+# Deprecated wrappers (call lafiya-cli, will be removed next release):
+./scripts/deploy.sh --network testnet
+./scripts/admin.sh --network testnet
 ```
 
 ### Loader â€” shared between deploy and admin
@@ -97,7 +106,7 @@ The shell loader uses `python3` with `tomllib`/`tomli` to parse TOML robustly â€
 
 ## Updating after deploy
 
-After `./scripts/deploy.sh --network testnet`, copy the output contract IDs into `networks.toml`:
+After `lafiya-cli --network testnet deploy ...`, copy the output contract IDs into `networks.toml`:
 
 ```toml
 [testnet.contracts]
